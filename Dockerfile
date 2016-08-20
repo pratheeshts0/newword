@@ -19,7 +19,7 @@ run sed -i "s|allow_url_fopen = On|allow_url_fopen = Off|g" /etc/php5/apache2/ph
 
 workdir /tmp
 run git clone -b branch https://github.com/pratheeshts0/newword.git
-workdir /tmp/docker
+workdir /tmp/newword
 
 run cp wp-config-sample.php wp-config.php
 run sed -i "s|define('DB_NAME', 'database_name_here');|define('DB_NAME', 'wordpress');|g" wp-config.php
@@ -27,15 +27,15 @@ run sed -i "s|define('DB_USER', 'username_here');|define('DB_USER', 'wordpressus
 run sed -i "s|define('DB_PASSWORD', 'password_here');|define('DB_PASSWORD', 'password');|g" wp-config.php
 run sed -i "s|define('DB_HOST', 'localhost');|define('DB_HOST', '192.168.1.235');|g" wp-config.php
 run sed -i "s|;cgi.fix_pathinfo=1|cgi.fix_pathinfo=0|g" /etc/php5/fpm/php.ini
-run rsync -avP /tmp/docker/ /var/www/html/wordpress/
+run rsync -avP /tmp/newword/ /var/www/html/wordpress/
 run mkdir /etc/apache2/ssl
 workdir /etc/secure1
 
 run git clone -b file https://github.com/pratheeshts0/newword.git
-run cp /etc/secure1/docker/secure.conf /etc/apache2/sites-available/
-run cp /etc/secure1/docker/redirection.conf /etc/apache2/sites-available/
-run cp /etc/secure1/docker/apache.crt /etc/apache2/ssl/
-run cp /etc/secure1/docker/apache.key /etc/apache2/ssl/
+run cp /etc/secure1/newword/secure.conf /etc/apache2/sites-available/
+run cp /etc/secure1/newword/redirection.conf /etc/apache2/sites-available/
+run cp /etc/secure1/newword/apache.crt /etc/apache2/ssl/
+run cp /etc/secure1/newword/apache.key /etc/apache2/ssl/
 
 workdir /root
 run a2ensite secure.conf 
@@ -46,3 +46,4 @@ run chown -R www-data:www-data /var/www/html/
 run chmod 755 -R /var/www/html/
 expose 80 443
 entrypoint service apache2 restart && service php5-fpm restart && bash
+
